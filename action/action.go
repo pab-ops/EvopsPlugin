@@ -1,5 +1,4 @@
-package router
+package action
 
 type Action struct {
-
 }
