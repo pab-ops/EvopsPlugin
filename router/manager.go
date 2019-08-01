@@ -2,6 +2,7 @@ package router
 
 import (
 	"fmt"
+	"github.com/pab-ops/EvopsPlugin/utils"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -52,6 +53,8 @@ func (rm *manager) AutoRouter(module interface{}) {
 	filePath := ""
 	t := reflect.Indirect(v).Type()
 	fmt.Println(t.PkgPath())
+
+	utils.FileExists("")
 
 	//wgoPath := filepath.SplitList(goPath)
 	//for _, wg := range wgoPath {
