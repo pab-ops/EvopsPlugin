@@ -7,18 +7,19 @@ import (
 	"go/parser"
 	"go/token"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 )
 
-//var goPath string
-//
-//func init() {
-//	goPath = os.Getenv("GOPATH")
-//	if "" == goPath {
-//		panic("未设置环境变量$GOPATH")
-//	}
-//}
+var goPath string
+
+func init() {
+	goPath = os.Getenv("GOPATH")
+	if "" == goPath {
+		panic("未设置环境变量$GOPATH")
+	}
+}
 
 func NewManager() *manager {
 	rm := new(manager)
@@ -53,17 +54,14 @@ func (rm *manager) AutoRouter(module interface{}) {
 	filePath := ""
 	t := reflect.Indirect(v).Type()
 	fmt.Println(t.PkgPath())
-
-	utils.FileExists("")
-
-	//wgoPath := filepath.SplitList(goPath)
-	//for _, wg := range wgoPath {
-	//	wg, _ = filepath.EvalSymlinks(filepath.Join(wg, "src", t.PkgPath()))
-	//	if utils.FileExists(wg) {
-	//		filePath = wg
-	//		break
-	//	}
-	//}
+	wgoPath := filepath.SplitList(goPath)
+	for _, wg := range wgoPath {
+		wg, _ = filepath.EvalSymlinks(filepath.Join(wg, "pkg","mod", t.PkgPath()))
+		if utils.FileExists(wg) {
+			filePath = wg
+			break
+		}
+	}
 
 	fmt.Println(t.Name(), "添加注解路由", t.PkgPath())
 	rm.parseComment(filePath, t)
