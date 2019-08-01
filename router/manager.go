@@ -53,17 +53,16 @@ func (rm *manager) AutoRouter(module interface{}) {
 
 	filePath := ""
 	t := reflect.Indirect(v).Type()
-	fmt.Println(t.PkgPath())
 	wgoPath := filepath.SplitList(goPath)
 	for _, wg := range wgoPath {
-		wg, _ = filepath.EvalSymlinks(filepath.Join(wg, "pkg","mod", t.PkgPath()))
+		wg, _ = filepath.EvalSymlinks(filepath.Join(wg, "pkg", "mod", t.PkgPath()))
 		if utils.FileExists(wg) {
 			filePath = wg
 			break
 		}
 	}
 
-	fmt.Println(t.Name(), "添加注解路由", t.PkgPath())
+	fmt.Println(t.Name(), "添加注解路由", t.PkgPath(), filePath)
 	rm.parseComment(filePath, t)
 
 	return
